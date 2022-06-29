@@ -35,4 +35,12 @@ export class AuthService {
       return user;
     }
   }
+
+  googleLogin(req) {
+    if (!req.user) {
+      throw new HttpException('No user found', HttpStatus.BAD_REQUEST);
+    }
+
+    return req.user.accessToken;
+  }
 }
