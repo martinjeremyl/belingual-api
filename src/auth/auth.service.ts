@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/entities/user.entity';
-import { UsersService } from 'src/users/users.service';
+import { User } from '../entities/user.entity';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +16,7 @@ export class AuthService {
       const { password, ...result } = user;
       return result;
     }
-    return null;
+    throw new HttpException('Invalid password', HttpStatus.UNAUTHORIZED);
   }
 
   async login(user: User) {
@@ -32,6 +32,7 @@ export class AuthService {
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     } else {
       await this.usersService.register(user);
+      return user;
     }
   }
 }
